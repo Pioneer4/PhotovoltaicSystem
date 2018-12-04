@@ -1,0 +1,61 @@
+/*************************************************************
+*  Open source but not allowed to modify(All rights reserved)
+*File name      : brief.txt
+*Auther         : Walter
+*Version        : v1.0
+*Date           : 2018-11-21
+*Description    : 总体介绍该工程中MCU的资源使用情况和硬件接口
+*Function List  : 
+*History        :
+*************************************************************/
+
+/******************** 中断资源 ********************/
+TIM7    :             抢占优先级0  子优先级3
+UART1   : PA9  PA10   抢占优先级1  子优先级0
+UART4   : PA0  PA1    抢占优先级1  子优先级1
+UART3   : PB10 PB11   抢占优先级1  子优先级2
+TIM6    :             抢占优先级1  子优先级3
+触摸屏  : PC5         抢占优先级2  子优先级1
+
+
+/******************** 硬件资源 ********************/
+#1 USART串口资源
+  #1.1 USART1：（作为MCU的外留调试接口）
+    PA9(Tx)   PA10(Rx)
+
+  #1.2 UART3：（与串口HMI通信）
+    PB10(Tx)   PB11(Rx)
+
+  #1.3 UART4：（与GY39环境参数模块通信）
+    PA0(Tx)   PA1(Rx)
+
+#2 SPI资源
+  SPI1：（w25q16存储芯片通信）
+  PB0(SPI1_CS)
+  PB3(SPI1_SCK)
+  PB4(SPI1_MISO)  
+  PB5(SPI1_MOSI)
+
+#3 SDIO资源
+  PC8(SDIO_D0)
+  PC9(SDIO_D1)
+  PC10(SDIO_D2)
+  PC11(SDIO_D3)
+  PC12(SDIO_SCK)
+  PD2(SDIO_CMD) 
+  
+#4 ADC模数转换单元
+  PA5(ADC1_IN5)
+  
+#5 PWM资源
+  PC6(TIM3_CH1)
+ 
+
+/***************** 预留资源 *****************/
+ #1.2 CAN     : PA11 PA12   抢占优先级1  子优先级1
+ CAN1: PA11(CAN_Rx)  PA12(CAN_Tx)
+ 
+ /* 待解决问题 */
+ LCD_Init();				  					
+ AdcInit();  
+ 两者初始化顺序改变为什么ADC就不能正常工作，他的DR寄存器的值就超过12位。
