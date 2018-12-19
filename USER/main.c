@@ -25,10 +25,10 @@ int main(void)
 	LedInit();
 	KeyInit();
 	PwmLedInit();
-	LCD_Init();				  						/* 初始化LCD */
+	//LCD_Init();				  						/* 初始化LCD */
 	AdcInit();
 	TIM7_Init();
-	tp_dev.init();            						/* 初始化触摸屏 */
+	//tp_dev.init();            						/* 初始化触摸屏 */
 	TIM6_Init();
 	IwdgInit(4,1500);           					/* 初始化iwdg，超时周期3S */
 	GY39UartInit();                                 /* 初始化UART4（与GY-39通信） */
