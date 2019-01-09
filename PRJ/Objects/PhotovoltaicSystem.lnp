@@ -15,6 +15,7 @@
 ".\objects\gy39uart.o"
 ".\objects\adc.o"
 ".\objects\pwmled.o"
+".\objects\relay.o"
 ".\objects\delay.o"
 ".\objects\sys.o"
 ".\objects\uart.o"

@@ -210,11 +210,13 @@ void USART3_IRQHandler(void)
 					/* 关于触摸屏发送给单片机的“测试组别”信息 */
 					case 0x03:      
 					{
-						if (UART3_RX_BUF[2]==0x01)       headInfoFlag = 1; /* 1号模组 */
-						else if (UART3_RX_BUF[2]==0x02)  headInfoFlag = 2; /* 2号模组 */
-						else if (UART3_RX_BUF[2]==0x03)  headInfoFlag = 3; /* 3号模组 */
-						else if (UART3_RX_BUF[2]==0x04)  headInfoFlag = 4; /* 4号模组 */
-						else if (UART3_RX_BUF[2]==0x05)  headInfoFlag = 5; /* 5号模组 */
+						newFileFlag = 1;                                /* 创建新的文件 */
+						p_vaw->wh = 0;                                  /* 电量清空 */
+						if (UART3_RX_BUF[2]==0x01)       moduleNum = 1; /* 1号模组 */
+						else if (UART3_RX_BUF[2]==0x02)  moduleNum = 2; /* 2号模组 */
+						else if (UART3_RX_BUF[2]==0x03)  moduleNum = 3; /* 3号模组 */
+						else if (UART3_RX_BUF[2]==0x04)  moduleNum = 4; /* 4号模组 */
+						else if (UART3_RX_BUF[2]==0x05)  moduleNum = 5; /* 5号模组 */
 						break;
 					}
 					default:

@@ -21,6 +21,8 @@
 *Output         : 
 *Return         : 
 *************************************************************/
+char *p_str = NULL;
+
 void HmiChatGame(void)
 {
 	char charBuff[20];  /* 用于字符串转换 */
@@ -52,14 +54,7 @@ void HmiChatGame(void)
 					{	
 						exfuns_init();        /* 为fatfs相关变量申请内存 */
 						f_mount(fs[0],"0:",1);/* 挂载SD卡 */
-						
-						/* 若"message.txt"文件不存在，则创建该文件 */
-						FILINFO fno;
-						if (FR_NO_FILE == f_stat("0:/message.txt", &fno))
-						{
-							f_open(&fil, "0:/message.txt", FA_CREATE_NEW);	
-							f_close(&fil);
-						}
+			
 						sdInitFlag = 1;
 					}
 					
@@ -93,17 +88,17 @@ void HmiChatGame(void)
 			{
 				timeIndex = 0;
 				
-				if (headInfoFlag != 0)
+				if (newFileFlag != 0)
 				{
-					HeaderInfoSava(headInfoFlag);
-					headInfoFlag = 0;
+					CreateFile(moduleNum);
+					newFileFlag = 0;
 				}
 				
-				PhoVolDataSava();  /* 保存数据到FTF或SD卡 */
+				PhoVolDataSava(moduleNum);  /* 保存数据到FTF或SD卡 */
 				
 				sprintf(charBuff, "t9.txt=\"%.3f V\"", p_vaw->voltage);          /* 电压 */
 				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t10.txt=\"%.3f A\"", p_vaw->current);         /* 电流 */
+				sprintf(charBuff, "t10.txt=\"%.3f mA\"", p_vaw->current);        /* 电流 */
 				SendHmiCmd((u8*)charBuff);
 				sprintf(charBuff, "t11.txt=\"%.3f W\"", p_vaw->power);           /* 功率 */
 				SendHmiCmd((u8*)charBuff);
@@ -113,7 +108,7 @@ void HmiChatGame(void)
 				SendHmiCmd((u8*)charBuff);
 				sprintf(charBuff, "t14.txt=\"%.2f %%\"", p_envirParam->humi);    /* 湿度 */
 				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t15.txt=\"%.2f Pa\"", p_envirParam->pressure);  /* 气压 */
+				sprintf(charBuff, "t15.txt=\"%.3f Wh\"", p_vaw->wh);             /* 电量(瓦时) */
 				SendHmiCmd((u8*)charBuff);
 				sprintf(charBuff, "t16.txt=\"%d m\"", p_envirParam->altitude);   /* 海拔 */
 				SendHmiCmd((u8*)charBuff);
@@ -131,6 +126,27 @@ void HmiChatGame(void)
 	}
 }
 
+/*************************************************************
+*Function Name  : CreateFile
+*Author         : 张沁
+*Version        : v1.0
+*Date           : 2019-01-09
+*Description    : 创建测试文本
+*Input          : serialNum: 文本编号
+*Output         : 
+*Return         : 
+*************************************************************/
+void CreateFile(u8 serialNum)
+{
+	char charBuff[20];
+	
+	sprintf(charBuff, "0:/%d号模组.txt", serialNum);
+	
+	f_open(&fil, charBuff, FA_CREATE_ALWAYS | FA_WRITE);
+	f_close(&fil);
+}
+
+#if 0
 /*************************************************************
 *Function Name  : HeaderInfoSava
 *Author         : 张沁
@@ -151,6 +167,7 @@ void HeaderInfoSava(u8 serialNum)
 	f_write (&fil, charBuff, GetStringLen(charBuff), &bww);
 	f_close(&fil);
 }
+#endif
 
 /*************************************************************
 *Function Name  : PhoVolDataSava
@@ -158,23 +175,22 @@ void HeaderInfoSava(u8 serialNum)
 *Version        : v1.0
 *Date           : 2018-12-02
 *Description    : 保存光伏模组信息至TFT或SD卡
-*                 包括：电压、电流、功率、光强、温度、湿度、气压、海拔
-*Input          : 
+*                 包括：电压（V）、电流（mA）、功率(W)、电量(Wh)、光强、温度、湿度、海拔
+*Input          : serialNum: 文本编号
 *Output         : 
 *Return         : 
 *************************************************************/
-void PhoVolDataSava(void)
+void PhoVolDataSava(u8 serialNum)
 {
+    char fileBuff[20];
 	char charBuff[60];
 	sprintf(charBuff, "%.3f %.3f %.3f %.3f %.3f %.3f %.3f %d\r\n", p_vaw->voltage, p_vaw->current, p_vaw->power, 
-	p_envirParam->lightIntensity, p_envirParam->temp, p_envirParam->humi, p_envirParam->pressure, p_envirParam->altitude);
+	p_vaw->wh, p_envirParam->lightIntensity, p_envirParam->temp, p_envirParam->humi, p_envirParam->altitude);
 	
-	printf("%s", charBuff);
-	printf("%d\r\n", GetStringLen(charBuff));
-	
-	res=f_open (&fil,"0:/message.txt", FA_OPEN_EXISTING |FA_WRITE);	
+	sprintf(fileBuff, "0:/%d号模组.txt", serialNum);
+	res=f_open (&fil, fileBuff, FA_OPEN_EXISTING |FA_WRITE);	
 	res=f_lseek(&fil,f_size(&fil));
-	f_write (&fil, charBuff, GetStringLen(charBuff), &bww);
+	f_write (&fil, charBuff, GetStringLen(charBuff), &bww);	
 	f_close(&fil);
 }
 
@@ -197,3 +213,25 @@ u8 GetStringLen(char *str)
 
 	return (index+1);
 }
+
+
+/************************ 草稿本 ************************/
+#if 0
+
+//						/* 若"message.txt"文件不存在，则创建该文件 */
+//						FILINFO fno;
+//						if (FR_NO_FILE == f_stat("0:/message.txt", &fno))
+//						{
+//							f_open(&fil, "0:/message.txt", FA_CREATE_NEW);	
+//							f_close(&fil);
+//						}
+
+
+	printf("%s", charBuff);
+	printf("%d\r\n", GetStringLen(charBuff));
+
+	res=f_open (&fil,"0:/message.txt", FA_OPEN_EXISTING |FA_WRITE);	
+	res=f_lseek(&fil,f_size(&fil));
+	f_write (&fil, charBuff, GetStringLen(charBuff), &bww);	
+#endif
+

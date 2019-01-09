@@ -19,13 +19,14 @@ int main(void)
 	p_vaw = &vaw;
 	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); /* 系统中断优先级分组2 */
+	RelayInit();                                    /* 初始化继电器控制端口 */
 	UART1_Init(115200);                             /* 初始化串口1 */
 	UART3_Init(115200);                             /* 初始化串口3(与HMI通信) */
 	delay_init(168);                                /* 系统频率168MHz */
 	LedInit();
 	KeyInit();
 	PwmLedInit();
-	//LCD_Init();				  						/* 初始化LCD */
+	LCD_Init();				  						/* 初始化LCD */
 	AdcInit();
 	TIM7_Init();
 	//tp_dev.init();            						/* 初始化触摸屏 */
@@ -110,6 +111,13 @@ u8 res=0;
 			}
 		}
 		delay_ms(50);
+		
+		u8 val = 0;
+		for (val=0; val<10; val++)
+		{
+			brightControl(val*10);
+			delay_ms(2000);
+		}
 	
 #endif
 

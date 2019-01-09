@@ -27,6 +27,7 @@
 #include "GY39uart.h"
 #include "adc.h"
 #include "pwmLed.h"
+#include "relay.h"
 
 #include "malloc.h" 
 #include "sdio_sdcard.h" 

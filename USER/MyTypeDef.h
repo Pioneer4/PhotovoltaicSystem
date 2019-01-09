@@ -55,8 +55,8 @@ EXTERN unsigned char UART4_RX_BUF[UART4_REC_LEN]; /* UART4接收缓冲区 */
 #define PAGE_SURE            5
 EXTERN unsigned char state;
 
-#define REFRESH_PHOTOV_INFO   20   /* 光伏模组基本信息刷新时间（200ms） */
-#define REFRESH_MENU          20   /* 菜单界面（200ms） */
+#define REFRESH_PHOTOV_INFO   20    /* 光伏模组基本信息刷新时间（1000ms） */
+#define REFRESH_MENU          20    /* 菜单界面（1000ms） */
 #define REFRESH_CURVE_INFO    1    /* 曲线信息刷新时间（50ms） */
 EXTERN unsigned char timeIndex;    /* 计时索引 */
 
@@ -76,6 +76,7 @@ typedef struct VAW
 	float voltage;               /* 电压 */
 	float current;			     /* 电流 */
 	float power;                 /* 功率 */
+	float wh;                    /* 累计发电量 （瓦时） */
 } _VAW;
 EXTERN _VAW vaw, *p_vaw;
 
@@ -84,8 +85,13 @@ EXTERN FIL fil;
 EXTERN FRESULT res;
 EXTERN UINT bww;
 
-EXTERN unsigned char headInfoFlag;
+EXTERN unsigned char moduleNum;
+EXTERN unsigned char newFileFlag;
 
 EXTERN unsigned char sdInitFlag;
+
+EXTERN unsigned char sampCircuitFlag;
+#define SAMP_CIRCUIT_1   1       /* 1号采样电路 */
+#define SAMP_CIRCUIT_2   2       /* 2号采样电路 */
 
 #endif//_MYTYPEDEF_H_

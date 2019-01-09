@@ -71,6 +71,7 @@ void KeyInit(void)
 *Output         ：
 *Return         ：
 *************************************************************/
+int flag = 0; //临时测试 2018-12-25
 void EXTI4_IRQHandler(void)
 {	
 	//char retValue[60] = {0};
@@ -80,9 +81,34 @@ void EXTI4_IRQHandler(void)
 	
 	EXTI_ClearFlag(EXTI_Line4);  //清除Line4上的标志位
 	
-	PhoVolDataSava();
+	//PhoVolDataSava();
 	//W25QXX_Erase_Chip();
 	Led2Switch(ON);
+	
+	if (flag == 0) 
+	{
+		flag++;
+		Led2Switch(OFF);
+		RelayPhovSwitch(OPEN_CONTACT);
+		RelaySampSwitch(OPEN_CONTACT);
+	}
+	else if (flag == 1)
+	{
+		flag++;
+		Led2Switch(ON);
+	}
+	else if (flag == 2)
+	{
+		flag++;
+		RelayPhovSwitch(CLOSE_CONTACT);
+		RelaySampSwitch(OPEN_CONTACT);
+	}
+	else if (flag == 3)
+	{
+		flag = 0;
+		RelayPhovSwitch(OPEN_CONTACT);
+		RelaySampSwitch(CLOSE_CONTACT);
+	}
 	
 #if SYSTEM_SUPPORT_OS 	//如果SYSTEM_SUPPORT_OS为真，则需要支持OS.
 	OSIntExit();  											 

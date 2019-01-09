@@ -34,7 +34,7 @@ void PwmLedInit(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;              //复用功能
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;	      //速度100MHz
-	GPIO_Init(GPIOC, &GPIO_InitStructure);                    //初始化PC6,PC7,PC8,PC9
+	GPIO_Init(GPIOC, &GPIO_InitStructure);                    //初始化PC6
 	
 	GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_TIM3);   //GPIOC6复用为定时器3
 	

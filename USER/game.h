@@ -11,9 +11,12 @@
 #ifndef __GAME_H
 #define __GAME_H
 
+
 void HmiChatGame(void);
+void CreateFile(u8 serialNum);
 void HeaderInfoSava(u8 serialNum);
-void PhoVolDataSava(void);
+void PhoVolDataSava(u8 serialNum);
 u8 GetStringLen(char *str);
+
 #endif
 
