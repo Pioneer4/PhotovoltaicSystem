@@ -112,6 +112,15 @@ void HmiChatGame(void)
 				SendHmiCmd((u8*)charBuff);
 				sprintf(charBuff, "t16.txt=\"%d m\"", p_envirParam->altitude);   /* º£°Î */
 				SendHmiCmd((u8*)charBuff);
+				
+				p_vaw->voltage = 0;
+				p_vaw->current = 0;
+				p_vaw->power = 0;
+				p_envirParam->lightIntensity = 0;
+				p_envirParam->temp = 0;
+				p_envirParam->humi = 0;
+				p_vaw->wh = 0;
+				p_envirParam->altitude = 0;
 			}
 			else
 			{

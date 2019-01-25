@@ -55,8 +55,8 @@ EXTERN unsigned char UART4_RX_BUF[UART4_REC_LEN]; /* UART4接收缓冲区 */
 #define PAGE_SURE            5
 EXTERN unsigned char state;
 
-#define REFRESH_PHOTOV_INFO   20    /* 光伏模组基本信息刷新时间（1000ms） */
-#define REFRESH_MENU          20    /* 菜单界面（1000ms） */
+#define REFRESH_PHOTOV_INFO   20   /* 光伏模组基本信息刷新时间（1000ms） */
+#define REFRESH_MENU          20   /* 菜单界面（1000ms） */
 #define REFRESH_CURVE_INFO    1    /* 曲线信息刷新时间（50ms） */
 EXTERN unsigned char timeIndex;    /* 计时索引 */
 

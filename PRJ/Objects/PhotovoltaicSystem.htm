@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\PhotovoltaicSystem.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\PhotovoltaicSystem.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Jan 10 00:22:09 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Jan 24 23:07:45 2019
 <BR><P>
 <H3>Maximum Stack Usage =        800 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -799,7 +799,7 @@ Global Symbols
 <P><STRONG><a name="[2]"></a>HardFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.HardFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f40_41xxx.o(RESET)
 </UL>
-<P><STRONG><a name="[9d]"></a>HmiChatGame</STRONG> (Thumb, 492 bytes, Stack size 32 bytes, game.o(i.HmiChatGame))
+<P><STRONG><a name="[9d]"></a>HmiChatGame</STRONG> (Thumb, 584 bytes, Stack size 32 bytes, game.o(i.HmiChatGame))
 <BR><BR>[Stack]<UL><LI>Max Depth = 792<LI>Call Chain = HmiChatGame &rArr; PhoVolDataSava &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteDisk &rArr; SD_WriteBlock &rArr; SD_Init &rArr; SD_EnableWideBusOperation &rArr; SDEnWideBus &rArr; FindSCR &rArr; CmdResp1Error
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
@@ -1567,7 +1567,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[41]"></a>TIM7_IRQHandler</STRONG> (Thumb, 674 bytes, Stack size 16 bytes, timer.o(i.TIM7_IRQHandler))
+<P><STRONG><a name="[41]"></a>TIM7_IRQHandler</STRONG> (Thumb, 774 bytes, Stack size 16 bytes, timer.o(i.TIM7_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = TIM7_IRQHandler &rArr; GetAdc &rArr; ADC_RegularChannelConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;brightControl

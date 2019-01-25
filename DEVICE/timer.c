@@ -124,8 +124,11 @@ void TIM6_DAC_IRQHandler(void)
 *Output         ：
 *Return         ：
 *************************************************************/
+float volBuf[3];
 void TIM7_IRQHandler(void)
 {
+	float sum = 0;
+	static unsigned int averCount = 0;
 	static unsigned int curCount = 0;
 	static unsigned int volCount = 0;
 	
@@ -134,7 +137,19 @@ void TIM7_IRQHandler(void)
 	if (TIM_GetITStatus(TIM7, TIM_IT_Update) !=  RESET) /* 溢出中断 */
 	{
 		v = GetAdc(4);
-		p_vaw->voltage = v * (float)3.3 / 4096 * (float)3.71;
+		//p_vaw->voltage = v * (float)3.28 / 4096 * (float)3.687;
+		
+		/* 均值滤波 */
+		volBuf[averCount++] = v * (float)3.28 / 4096 * (float)3.687;
+		if (averCount == 3)
+		{
+			for (averCount=0; averCount<3; averCount++)
+			{
+				sum += volBuf[averCount];
+				p_vaw->voltage = sum / 3;
+			}
+			averCount = 0;
+		}
 		
 		/****** 采样电路电压保护 ******/
 		if (p_vaw->voltage > (float)12)        /* 12 / 3.71(比例系数) = 3.2345 */
