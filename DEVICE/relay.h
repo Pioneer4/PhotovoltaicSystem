@@ -12,11 +12,10 @@
 
 #include "myinclude.h"
 
-#define OPEN_CONTACT  Bit_RESET
-#define CLOSE_CONTACT Bit_SET
+
 
 void RelayInit(void);  	
-void RelayPhovSwitch(BitAction state);
-void RelaySampSwitch(BitAction state);
+void LedSwitch(BitAction state);
+void WarmSwitch(BitAction state);
 
 #endif

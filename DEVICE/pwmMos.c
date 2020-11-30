@@ -10,18 +10,18 @@
 #include "myinclude.h"
 
 /*************************************************************
-*Function Name  : pwmLedInit
+*Function Name  : PwmMosInit
 *Auther         : 张沁
 *Vertion        : v1.0
 *Date           : 2018-12-02
-*Description    : 初始化pwm,用于驱动MOS管，控制灯，显示电量信息
+*Description    : 初始化pwm,用于驱动MOS管，控制4.7Ω功率电阻工作时间
 			      TIM3用于生产PWM（1KHz）
-				  PC6 对应通道（CH1）
+				  PC7 对应通道（CH2）
 *Input          ：
 *Output         ：
 *Return         ：
 *************************************************************/
-void PwmLedInit(void)
+void PwmMosInit(void)
 {
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -31,12 +31,12 @@ void PwmLedInit(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);  	  //TIM3时钟使能    
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE); 	  //使能PORTC时钟	
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; 
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7; 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;              //复用功能
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;	      //速度100MHz
-	GPIO_Init(GPIOC, &GPIO_InitStructure);                    //初始化PC6
+	GPIO_Init(GPIOC, &GPIO_InitStructure);                    //初始化PC7
 	
-	GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_TIM3);   //GPIOC6复用为定时器3
+	GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_TIM3);   //GPIOC7复用为定时器3
 	
 	TIM_TimeBaseStructure.TIM_Prescaler = 840 - 1;            //定时器分频 84M/840 = 100kHz
 	TIM_TimeBaseStructure.TIM_Period = 100 - 1;               //自动重装载值 1000kHz/100 = 1kHz
@@ -48,10 +48,10 @@ void PwmLedInit(void)
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //输出极性:TIM输出比较极性高
 	TIM_OCInitStructure.TIM_Pulse = 0;                        //设置待装入捕获比较寄存器的脉冲值
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;//比较输出使能
-	TIM_OC1Init(TIM3, &TIM_OCInitStructure);  
+	TIM_OC2Init(TIM3, &TIM_OCInitStructure);  
 
 
-	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);  //使能TIM3在CCR1上的预装载寄存器
+	TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Enable);  //使能TIM3在CCR1上的预装载寄存器
  
     TIM_ARRPreloadConfig(TIM3, ENABLE);//ARPE使能 
 	
@@ -60,18 +60,18 @@ void PwmLedInit(void)
 
 
 /*************************************************************
-*Function Name  : brightControl
+*Function Name  : PwmMosControl
 *Author         : 张沁
 *Version        : v1.0
 *Date           : 2018-12-02
-*Description    : 亮度控制
+*Description    : N-MOSFET通断控制
 *Input          : val  @arg 0~99  
 *                 占空比 = （val+1）/ 100
 *Output         : 
 *Return         : 
 *************************************************************/
-void brightControl(u16 val)
+void PwmMosControl(u16 val)
 {
-	TIM_SetCompare1(TIM3, val);
+	TIM_SetCompare2(TIM3, val);
 }
 

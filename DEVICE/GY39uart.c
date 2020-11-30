@@ -102,7 +102,7 @@ void UART4_IRQHandler(void)
 					temp = (temp << 8) + UART4_RX_BUF[6];
 					temp = (temp << 8) + UART4_RX_BUF[7];
 					p_envirParam->lightIntensity = (float)temp / 100;
-	
+					
 					break;
 				}
 				

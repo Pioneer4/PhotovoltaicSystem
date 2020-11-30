@@ -45,6 +45,7 @@ TIM6    :             抢占优先级1  子优先级3
   PD2(SDIO_CMD) 
   
 #4 ADC模数转换单元
+  PA4(ADC1_IN4)
   PA5(ADC1_IN5)
   
 #5 PWM资源

@@ -38,54 +38,53 @@ void RelayInit(void)
 	
 	GPIO_Init(GPIOE, &GPIOE_InitStructure);                  /* 初始化PE0，PE1 */
 	
-	GPIO_ResetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1);          /* 电平拉低 （继电器常闭触点闭合，常开触点断开） */
+	GPIO_SetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1);          /* 电平拉低 （继电器常闭触点闭合，常开触点断开） */
 }
 
 /*************************************************************
-*Function Name  : RelayPhovSwitch
+*Function Name  : LedSwitch
 *Author         : 张沁
 *Version        : v1.0
 *Date           : 2018-12-25
 *Description    : 控制继电器（采样保护电路）动作
 *Input          ：BitAction: 继电器动作方式
-				  @arg OPEN_CONTACT : 常闭触点闭合，常开触点断开
-				  @arg CLOSE_CONTACT: 常闭触点断开，常开触点闭合
+				  @arg ON : 打开LED灯
+				  @arg OFF: 关闭LED灯
 *Output         ：
 *Return         ：
 *************************************************************/
-void RelayPhovSwitch(BitAction state) 
+void LedSwitch(BitAction state) 
 {
-	if (state == OPEN_CONTACT)         /* 常闭触点闭合，常开触点断开 */
-	{
-		GPIO_ResetBits(GPIOE, GPIO_Pin_0);
-	}
-	else if (state == CLOSE_CONTACT)   /* 常闭触点断开，常开触点闭合 */
+	if (state == OFF)        
 	{
 		GPIO_SetBits(GPIOE, GPIO_Pin_0);
+	}
+	else if (state == ON)   
+	{
+		GPIO_ResetBits(GPIOE, GPIO_Pin_0);
 	}
 }
 
 /*************************************************************
-*Function Name  : RelaySampSwitch
+*Function Name  : WarmSwitch
 *Author         : 张沁
 *Version        : v1.0
 *Date           : 2018-12-25
 *Description    : 控制继电器（采样切换电路）动作
 *Input          ：BitAction: 继电器动作方式
-				  @arg OPEN_CONTACT : 常闭触点闭合，常开触点断开
-				  @arg CLOSE_CONTACT: 常闭触点断开，常开触点闭合
+				  @arg ON : 打开暖气
+				  @arg OFF: 关闭暖气
 *Output         ：
 *Return         ：
 *************************************************************/
-void RelaySampSwitch(BitAction state) 
+void WarmSwitch(BitAction state) 
 {
-	if (state == OPEN_CONTACT)         /* 常闭触点闭合，常开触点断开 */
-	{
-		GPIO_ResetBits(GPIOE, GPIO_Pin_1);
-	}
-	else if (state == CLOSE_CONTACT)   /* 常闭触点断开，常开触点闭合 */
+	if (state == OFF)        
 	{
 		GPIO_SetBits(GPIOE, GPIO_Pin_1);
 	}
+	else if (state == ON)   
+	{
+		GPIO_ResetBits(GPIOE, GPIO_Pin_1);
+	}
 }
-

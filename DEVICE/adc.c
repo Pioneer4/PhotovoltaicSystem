@@ -29,21 +29,21 @@ void  AdcInit(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);//使能GPIOA时钟
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC1时钟
 	
-	//先初始化ADC1通道4 IO口
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;            //PA4 通道4
+	//先初始化ADC1通道2 IO口
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;            //PA2 通道2
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;         //模拟输入
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;     //不带上下拉
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;     //下拉
 	GPIO_Init(GPIOA, &GPIO_InitStructure);               //初始化  
 
-	//先初始化ADC1通道5 IO口
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;            //PA5 通道5
+	//先初始化ADC1通道3 IO口
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;            //PA3 通道3
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;         //模拟输入
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;     //不带上下拉
 	GPIO_Init(GPIOA, &GPIO_InitStructure);               //初始化  
 
 	RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1,ENABLE);	 //ADC1复位
 	RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1,DISABLE); //复位结束	 
-
+	
 
 	ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;                    //独立模式
 	ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;//两个采样阶段之间的延迟5个时钟
@@ -60,10 +60,7 @@ void  AdcInit(void)
 	ADC_Init(ADC1, &ADC_InitStructure);										    //ADC初始化
 
 
-	ADC_Cmd(ADC1, ENABLE);//开启AD转换器	
-	
-	sampCircuitFlag = SAMP_CIRCUIT_1; /* 1号采样电路 */
-	RelayPhovSwitch(CLOSE_CONTACT);   /* 闭合采样电路 */
+	ADC_Cmd(ADC1, ENABLE);//开启AD转换器
 }
 
 

@@ -27,6 +27,7 @@
 #include "GY39uart.h"
 #include "adc.h"
 #include "pwmLed.h"
+#include "pwmMos.h"
 #include "relay.h"
 
 #include "malloc.h" 

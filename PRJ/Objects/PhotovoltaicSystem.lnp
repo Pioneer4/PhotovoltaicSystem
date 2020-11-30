@@ -15,6 +15,7 @@
 ".\objects\gy39uart.o"
 ".\objects\adc.o"
 ".\objects\pwmled.o"
+".\objects\pwmmos.o"
 ".\objects\relay.o"
 ".\objects\delay.o"
 ".\objects\sys.o"
@@ -41,6 +42,6 @@
 ".\objects\ff.o"
 ".\objects\cc936.o"
 --library_type=microlib --strict --scatter ".\Objects\PhotovoltaicSystem.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\PhotovoltaicSystem.map" -o .\Objects\PhotovoltaicSystem.axf

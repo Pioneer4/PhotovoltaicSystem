@@ -38,39 +38,6 @@ void HmiChatGame(void)
 		/******************** menu界面 ********************/
 		case PAGE_MENU:
 		{
-			if (timeIndex == REFRESH_MENU)
-			{
-				timeIndex = 0;
-				
-				if (SD_Init())  /* 检测不到SD卡 */
-				{
-					SendHmiCmd((u8*)"vis t1,1");
-					sdInitFlag = 0;
-				}
-				else
-				{
-					/* 还未初始化SD卡 */
-					if (sdInitFlag == 0)     
-					{	
-						exfuns_init();        /* 为fatfs相关变量申请内存 */
-						f_mount(fs[0],"0:",1);/* 挂载SD卡 */
-			
-						sdInitFlag = 1;
-					}
-					
-					SendHmiCmd((u8*)"vis t1,0");
-				}	
-			}
-			else 
-			{
-				timeIndex++;
-			}
-			break;
-		}
-		
-		/******************** 系统配置界面 ********************/
-		case PAGE_SYS_CFG:
-		{
 			break;
 		}
 		
@@ -81,45 +48,61 @@ void HmiChatGame(void)
 			break;
 		}
 		
-		/******************** 光伏模组信息展示界面 ********************/
+		/******************** 新能源小屋控制界面 ********************/
+		case PAGE_CONTROL:
+		{
+			break;
+		}
+		
+		/******************** 新能源小屋信息展示界面 ********************/
 		case PAGE_INFO:
 		{   
 			if (timeIndex == REFRESH_PHOTOV_INFO)
 			{
 				timeIndex = 0;
 				
-				if (newFileFlag != 0)
-				{
-					CreateFile(moduleNum);
-					newFileFlag = 0;
-				}
+//				sprintf(charBuff, "t5.txt=\"%.3f V\"", p_vawPV->voltage);		/* 光伏功率 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t7.txt=\"%.3f V\"", p_vawMT->voltage);		/* 风机功率 */
+//				SendHmiCmd((u8*)charBuff);
 				
-				PhoVolDataSava(moduleNum);  /* 保存数据到FTF或SD卡 */
-				
-				sprintf(charBuff, "t9.txt=\"%.3f V\"", p_vaw->voltage);          /* 电压 */
+				sprintf(charBuff, "t5.txt=\"%.3f W\"", p_vawPV->power);           /* 光伏功率（1平方米） */
 				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t10.txt=\"%.3f mA\"", p_vaw->current);        /* 电流 */
+				sprintf(charBuff, "t6.txt=\"%.3f Wh\"", p_vawPV->wh);             /* 光伏电量(瓦时) */
 				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t11.txt=\"%.3f W\"", p_vaw->power);           /* 功率 */
+				sprintf(charBuff, "t7.txt=\"%.3f W\"", p_vawMT->power);           /* 风机功率（1平方米） */
 				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t12.txt=\"%.2f lux\"", p_envirParam->lightIntensity);/* 光照强度 */
-				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t13.txt=\"%.2f ℃\"", p_envirParam->temp);    /* 温度 */
-				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t14.txt=\"%.2f %%\"", p_envirParam->humi);    /* 湿度 */
-				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t15.txt=\"%.3f Wh\"", p_vaw->wh);             /* 电量(瓦时) */
-				SendHmiCmd((u8*)charBuff);
-				sprintf(charBuff, "t16.txt=\"%d m\"", p_envirParam->altitude);   /* 海拔 */
+				sprintf(charBuff, "t8.txt=\"%.3f Wh\"", p_vawMT->wh);             /* 风机电量(瓦时) */
 				SendHmiCmd((u8*)charBuff);
 				
-				p_vaw->voltage = 0;
-				p_vaw->current = 0;
-				p_vaw->power = 0;
+				p_vawPV->power = 0;
+				p_vawMT->power = 0;
+				
+				
+//				sprintf(charBuff, "t9.txt=\"%.3f V\"", p_vawPV->voltage);         /* 电压 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t10.txt=\"%.3f mA\"", p_vawPV->current);        /* 电流 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t11.txt=\"%.3f W\"", p_vawPV->power);           /* 功率 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t12.txt=\"%.0f W/㎡\"", p_envirParam->lightIntensity*(float)1.1/100);/* 光照强度 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t13.txt=\"%.2f ℃\"", p_envirParam->temp);    /* 温度 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t14.txt=\"%.2f %%\"", p_envirParam->humi);    /* 湿度 */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t15.txt=\"%.3f Wh\"", p_vawPV->wh);             /* 电量(瓦时) */
+//				SendHmiCmd((u8*)charBuff);
+//				sprintf(charBuff, "t16.txt=\"%d m\"", p_envirParam->altitude);   /* 海拔 */
+//				SendHmiCmd((u8*)charBuff);
+				
+//				p_vawPV->voltage = 0;
+//				p_vawPV->current = 0;
+//				p_vawPV->power = 0;
 				p_envirParam->lightIntensity = 0;
 				p_envirParam->temp = 0;
 				p_envirParam->humi = 0;
-				p_vaw->wh = 0;
+//				p_vawPV->wh = 0;
 				p_envirParam->altitude = 0;
 			}
 			else
@@ -193,8 +176,8 @@ void PhoVolDataSava(u8 serialNum)
 {
     char fileBuff[20];
 	char charBuff[60];
-	sprintf(charBuff, "%.3f %.3f %.3f %.3f %.3f %.3f %.3f %d\r\n", p_vaw->voltage, p_vaw->current, p_vaw->power, 
-	p_vaw->wh, p_envirParam->lightIntensity, p_envirParam->temp, p_envirParam->humi, p_envirParam->altitude);
+	sprintf(charBuff, "%.3f %.3f %.3f %.3f %.3f %.3f %.3f %d\r\n", p_vawPV->voltage, p_vawPV->current, p_vawPV->power, 
+	p_vawPV->wh, p_envirParam->lightIntensity, p_envirParam->temp, p_envirParam->humi, p_envirParam->altitude);
 	
 	sprintf(fileBuff, "0:/%d号模组.txt", serialNum);
 	res=f_open (&fil, fileBuff, FA_OPEN_EXISTING |FA_WRITE);	

@@ -193,9 +193,9 @@ void USART3_IRQHandler(void)
 					{
 						if (UART3_RX_BUF[2]==0x00) state = PAGE_LOGO;
 						else if (UART3_RX_BUF[2]==0x01) state = PAGE_MENU;
-						else if (UART3_RX_BUF[2]==0x02) state = PAGE_SYS_CFG;
-						else if (UART3_RX_BUF[2]==0x03) state = PAGE_SURE;
-						else if (UART3_RX_BUF[2]==0x04) state = PAGE_INFO;
+						else if (UART3_RX_BUF[2]==0x02) state = PAGE_CONTROL;
+						else if (UART3_RX_BUF[2]==0x03) state = PAGE_INFO;
+						else if (UART3_RX_BUF[2]==0x04) state = PAGE_SURE;
 						timeIndex = 0;
 						
 						break;
@@ -204,21 +204,25 @@ void USART3_IRQHandler(void)
 					/* 关于触摸屏发送给单片机的控制指令 */
 					case 0x02:
 					{
+						if (UART3_RX_BUF[2]==0x00)		/* 打开LED */
+						{
+							LedSwitch(OFF);
+						}
+						else if (UART3_RX_BUF[2]==0x01)	/* 关闭LED */
+						{
+							LedSwitch(ON);
+						}
+						else if (UART3_RX_BUF[2]==0x02)	/* 打开暖气 */
+						{
+							WarmSwitch(OFF);
+						}
+						else if (UART3_RX_BUF[2]==0x03)	/* 关闭暖气 */
+						{
+							WarmSwitch(ON);
+						}
 						break;
 					}
 					
-					/* 关于触摸屏发送给单片机的“测试组别”信息 */
-					case 0x03:      
-					{
-						newFileFlag = 1;                                /* 创建新的文件 */
-						p_vaw->wh = 0;                                  /* 电量清空 */
-						if (UART3_RX_BUF[2]==0x01)       moduleNum = 1; /* 1号模组 */
-						else if (UART3_RX_BUF[2]==0x02)  moduleNum = 2; /* 2号模组 */
-						else if (UART3_RX_BUF[2]==0x03)  moduleNum = 3; /* 3号模组 */
-						else if (UART3_RX_BUF[2]==0x04)  moduleNum = 4; /* 4号模组 */
-						else if (UART3_RX_BUF[2]==0x05)  moduleNum = 5; /* 5号模组 */
-						break;
-					}
 					default:
 						break;
 				}

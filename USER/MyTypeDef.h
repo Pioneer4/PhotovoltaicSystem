@@ -48,11 +48,11 @@ EXTERN unsigned char UART4_RX_BUF[UART4_REC_LEN]; /* UART4接收缓冲区 */
 与HMI通信的状态机参数
 */
 
-#define PAGE_LOGO			 1
-#define	PAGE_MENU 	 	     2
-#define PAGE_SYS_CFG         3
-#define	PAGE_INFO       	 4
-#define PAGE_SURE            5
+#define PAGE_LOGO			 0
+#define	PAGE_MENU 	 	     1
+#define PAGE_CONTROL         2
+#define	PAGE_INFO       	 3
+#define PAGE_SURE	         4
 EXTERN unsigned char state;
 
 #define REFRESH_PHOTOV_INFO   20   /* 光伏模组基本信息刷新时间（1000ms） */
@@ -71,14 +71,17 @@ typedef struct ENVIR_PARAM
 } _ENVIR_PARAM;
 EXTERN _ENVIR_PARAM envirParam, *p_envirParam;
 
-typedef struct VAW
+typedef struct vawPV
 {
 	float voltage;               /* 电压 */
 	float current;			     /* 电流 */
 	float power;                 /* 功率 */
 	float wh;                    /* 累计发电量 （瓦时） */
-} _VAW;
-EXTERN _VAW vaw, *p_vaw;
+} _vawPV;
+EXTERN _vawPV vawPV, *p_vawPV;
+EXTERN _vawPV vawMT, *p_vawMT;
+
+EXTERN float coefficient;        /* 功率归一化系数 */
 
 /* FATFS相关变量 */
 EXTERN FIL fil;
